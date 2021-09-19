@@ -9,7 +9,6 @@ using BiblioFAP.Conf;
 using BiblioFAP.Models;
 using Microsoft.AspNetCore.Authorization;
 using System.Security.Claims;
-using System.Security.Authentication;
 
 namespace BiblioFAP.Controllers
 {
