@@ -7,6 +7,9 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using BiblioFAP.Conf;
 using BiblioFAP.Models;
+using Microsoft.AspNetCore.Authorization;
+using System.Security.Claims;
+using System.Security.Authentication;
 
 namespace BiblioFAP.Controllers
 {
@@ -23,6 +26,7 @@ namespace BiblioFAP.Controllers
 
         // GET: api/Users
         [HttpGet]
+        [Authorize(Roles = "1")]
         public async Task<ActionResult<IEnumerable<User>>> GetUser()
         {
             return await _context.User.ToListAsync();
@@ -30,13 +34,39 @@ namespace BiblioFAP.Controllers
 
         // GET: api/Users/5
         [HttpGet("{id}")]
+        [AllowAnonymous]
         public async Task<ActionResult<User>> GetUser(int id)
         {
-            var user = await _context.User.FindAsync(id);
+            if (!HttpContext.User.Identity.IsAuthenticated)
+            {
+                return Unauthorized();
+            }
+
+            string userId;
+
+            try
+            {
+                userId = User.Claims.First(x => x.Type == ClaimTypes.NameIdentifier).Value;
+            }
+            catch (NullReferenceException)
+            {
+                return Unauthorized();
+            }
+            catch (InvalidOperationException)
+            {
+                return Unauthorized();
+            }
+
+           var user = await _context.User.FindAsync(id);
 
             if (user == null)
             {
                 return NotFound();
+            }
+
+            if (user.Id != int.Parse(userId) && int.Parse(userId) != 1)
+            {
+                return Unauthorized();
             }
 
             return user;
@@ -45,6 +75,7 @@ namespace BiblioFAP.Controllers
         // PUT: api/Users/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
+        [AllowAnonymous]
         public async Task<IActionResult> PutUser(int id, User user)
         {
             if (id != user.Id)
@@ -76,6 +107,7 @@ namespace BiblioFAP.Controllers
         // POST: api/Users
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
+        [AllowAnonymous]
         public async Task<ActionResult<User>> PostUser(User user)
         {
             _context.User.Add(user);
@@ -86,6 +118,7 @@ namespace BiblioFAP.Controllers
 
         // DELETE: api/Users/5
         [HttpDelete("{id}")]
+        [AllowAnonymous]
         public async Task<IActionResult> DeleteUser(int id)
         {
             var user = await _context.User.FindAsync(id);

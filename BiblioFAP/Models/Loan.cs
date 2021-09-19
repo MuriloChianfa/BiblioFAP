@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace BiblioFAP.Models
 {
@@ -11,14 +12,17 @@ namespace BiblioFAP.Models
         [Key]
         public int Id { get; set; }
 
+        [ForeignKey("Book")]
         [Required(ErrorMessage = "The loan need one book")]
-        public Book Book { get; set; }
+        public int BookId { get; set; }
 
+        [ForeignKey("User")]
         [Required(ErrorMessage = "The loan need one customer")]
-        public User Customer { get; set; }
+        public int CustomerId { get; set; }
 
+        [ForeignKey("User")]
         [Required(ErrorMessage = "The loan need one official")]
-        public User Official { get; set; }
+        public int OfficialId { get; set; }
 
         [DisplayFormat(DataFormatString = "{0:yyyy/MM/dd}")]
         public DateTime WithdrawnAt { get; set; } = DateTime.Now;

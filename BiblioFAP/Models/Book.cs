@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace BiblioFAP.Models
 {
@@ -23,11 +24,13 @@ namespace BiblioFAP.Models
         [Range(1, 10000, ErrorMessage = "The page number must be 1-10000 pages!")]
         public int PageNumbers { get; set; }
 
+        [ForeignKey("Gender")]
         [Required(ErrorMessage = "Gender is required")]
-        public Gender Gender { get; set; }
+        public int GenderId { get; set; }
 
+        [ForeignKey("Publisher")]
         [Required(ErrorMessage = "Publisher is required")]
-        public Publisher Publisher { get; set; }
+        public int PublisherId { get; set; }
 
         [Required(ErrorMessage = "Author is required")]
         public string Author { get; set; }

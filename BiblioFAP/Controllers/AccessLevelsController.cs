@@ -13,48 +13,48 @@ namespace BiblioFAP.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [AllowAnonymous]
-    public class AddressesController : ControllerBase
+    //[Authorize(Roles = "1")]
+    public class AccessLevelsController : ControllerBase
     {
         private readonly Database _context;
 
-        public AddressesController(Database context)
+        public AccessLevelsController(Database context)
         {
             _context = context;
         }
 
-        // GET: api/Addresses
+        // GET: api/AccessLevels
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Address>>> GetAddress()
+        public async Task<ActionResult<IEnumerable<AccessLevel>>> GetAccessLevel()
         {
-            return await _context.Address.ToListAsync();
+            return await _context.AccessLevel.ToListAsync();
         }
 
-        // GET: api/Addresses/5
+        // GET: api/AccessLevels/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Address>> GetAddress(int id)
+        public async Task<ActionResult<AccessLevel>> GetAccessLevel(int id)
         {
-            var address = await _context.Address.FindAsync(id);
+            var accessLevel = await _context.AccessLevel.FindAsync(id);
 
-            if (address == null)
+            if (accessLevel == null)
             {
                 return NotFound();
             }
 
-            return address;
+            return accessLevel;
         }
 
-        // PUT: api/Addresses/5
+        // PUT: api/AccessLevels/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutAddress(int id, Address address)
+        public async Task<IActionResult> PutAccessLevel(int id, AccessLevel accessLevel)
         {
-            if (id != address.Id)
+            if (id != accessLevel.Id)
             {
                 return BadRequest();
             }
 
-            _context.Entry(address).State = EntityState.Modified;
+            _context.Entry(accessLevel).State = EntityState.Modified;
 
             try
             {
@@ -62,7 +62,7 @@ namespace BiblioFAP.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!AddressExists(id))
+                if (!AccessLevelExists(id))
                 {
                     return NotFound();
                 }
@@ -75,36 +75,36 @@ namespace BiblioFAP.Controllers
             return NoContent();
         }
 
-        // POST: api/Addresses
+        // POST: api/AccessLevels
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Address>> PostAddress(Address address)
+        public async Task<ActionResult<AccessLevel>> PostAccessLevel(AccessLevel accessLevel)
         {
-            _context.Address.Add(address);
+            _context.AccessLevel.Add(accessLevel);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetAddress", new { id = address.Id }, address);
+            return CreatedAtAction("GetAccessLevel", new { id = accessLevel.Id }, accessLevel);
         }
 
-        // DELETE: api/Addresses/5
+        // DELETE: api/AccessLevels/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteAddress(int id)
+        public async Task<IActionResult> DeleteAccessLevel(int id)
         {
-            var address = await _context.Address.FindAsync(id);
-            if (address == null)
+            var accessLevel = await _context.AccessLevel.FindAsync(id);
+            if (accessLevel == null)
             {
                 return NotFound();
             }
 
-            _context.Address.Remove(address);
+            _context.AccessLevel.Remove(accessLevel);
             await _context.SaveChangesAsync();
 
             return NoContent();
         }
 
-        private bool AddressExists(int id)
+        private bool AccessLevelExists(int id)
         {
-            return _context.Address.Any(e => e.Id == id);
+            return _context.AccessLevel.Any(e => e.Id == id);
         }
     }
 }

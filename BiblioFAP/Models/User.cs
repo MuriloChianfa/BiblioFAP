@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -23,14 +24,11 @@ namespace BiblioFAP.Models
         [DataType(DataType.Password)]
         public string Password { get; set; }
 
-        [Required(ErrorMessage = "The password confirmation is required")]
-        [MaxLength(255, ErrorMessage = "The password confirmation must be 8-255 characters"), MinLength(8)]
-        [DataType(DataType.Password)]
-        [Compare("Password")]
-        [NotMapped]
-        public string ConfirmPassword { get; set; }
+        [ForeignKey("Address")]
+        public int AddressId { get; set; }
 
-        public Address Address { get; set; }
+        [ForeignKey("AccessLevel")]
+        public int AccessLevelId { get; set; } = 3;
 
         [DisplayFormat(DataFormatString = "{0:yyyy/MM/dd}")]
         public DateTime BirthDate { get; set; }

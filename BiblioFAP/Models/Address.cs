@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace BiblioFAP.Models
 {
@@ -18,6 +19,7 @@ namespace BiblioFAP.Models
         [Required(ErrorMessage = "House id is required")]
         public string HouseId { get; set; }
 
-        public City City { get; set; }
+        [ForeignKey("City")]
+        public int CityId { get; set; }
     }
 }

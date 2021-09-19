@@ -7,11 +7,13 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using BiblioFAP.Conf;
 using BiblioFAP.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace BiblioFAP.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize(Roles = "1,2")]
     public class PublishersController : ControllerBase
     {
         private readonly Database _context;

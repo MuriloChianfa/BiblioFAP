@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace BiblioFAP.Models
 {
@@ -15,7 +16,8 @@ namespace BiblioFAP.Models
         [MaxLength(255, ErrorMessage = "The name of city must be 255 characters only"), MinLength(1)]
         public string Name { get; set; }
 
+        [ForeignKey("State")]
         [Required(ErrorMessage = "The state of city is required")]
-        public State State { get; set; }
+        public int StateId { get; set; }
     }
 }
