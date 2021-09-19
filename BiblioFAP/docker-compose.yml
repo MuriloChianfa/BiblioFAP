@@ -1,0 +1,52 @@
+version: "3.9"
+
+services:
+  bibliofap:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: bibliofap
+    container_name: bibliofap
+    restart: unless-stopped
+    network_mode: host
+    #ports:
+      #- "44351:44351"
+      #- "80:80"
+      #- "443:443"
+    logging:
+      driver: local
+    #healthcheck:
+    #  test: ["CMD", "netstat", "-a", "-p", "TCP", "-nl", "|", "grep", "0.0.0.0:5432"]
+    #  interval: 1m30s
+    #  timeout: 10s
+    #  retries: 3
+    #  start_period: 40s
+    deploy:
+      mode: global
+      replicas: 1
+    command: ["dotnet", "ef", "database update"]
+
+  pgsql:
+    build:
+      context: ./Persistence
+      dockerfile: Dockerfile
+    image: custom-pgsql
+    container_name: custom-pgsql
+    restart: unless-stopped
+    environment:
+      - POSTGRES_PASSWORD=admin
+    network_mode: host
+    #ports:
+      #- "5432:5432"
+    logging:
+      driver: local
+    healthcheck:
+      test: ["CMD", "netstat", "-a", "-p", "TCP", "-nl", "|", "grep", "0.0.0.0:5432"]
+      interval: 1m30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    deploy:
+      mode: global
+      replicas: 1
+
